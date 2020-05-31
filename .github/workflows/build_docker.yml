@@ -1,0 +1,32 @@
+name: Docker Image
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get the version
+      id: vars
+      run: |
+        DATE=$(date +%Y%m%d)
+        VERSION=$DATE-${GITHUB_SHA::7}
+    - name: Build the image
+      run: |
+        docker build \
+        --tag aquaponics:latest \
+        --tag aquaponics:${{steps.vars.outputs.VERSION}} \
+        .
+    - name: Docker Login
+      uses: azure/docker-login@v1
+      with:
+        login-server: docker.pkg.github.com
+        username: $GITHUB_ACTOR
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Docker Push
+      run: >
+        docker push aquaponics:${{steps.vars.outputs.VERSION}} aquaponics:latest 
