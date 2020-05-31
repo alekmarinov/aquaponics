@@ -18,7 +18,8 @@ jobs:
     - name: Build the image
       run: |
         docker build \
-        --tag ${{steps.vars.outputs.TAG_PREFIX}}:${{steps.vars.outputs.VERSION}} ${{steps.vars.outputs.TAG_PREFIX}}:latest \
+        --tag ${{steps.vars.outputs.TAG_PREFIX}}:${{steps.vars.outputs.VERSION}} \
+        --tag ${{steps.vars.outputs.TAG_PREFIX}}:latest \
         .
     - name: Docker Login
       uses: azure/docker-login@v1
