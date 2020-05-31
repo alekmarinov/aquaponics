@@ -28,5 +28,6 @@ jobs:
         username: $GITHUB_ACTOR
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Docker Push
-      run: >
-        docker push ${{steps.vars.outputs.TAG_PREFIX}}:${{steps.vars.outputs.VERSION}} ${{steps.vars.outputs.TAG_PREFIX}}:latest
+      run: |
+        docker push ${{steps.vars.outputs.TAG_PREFIX}}:${{steps.vars.outputs.VERSION}}
+        docker push ${{steps.vars.outputs.TAG_PREFIX}}:latest
