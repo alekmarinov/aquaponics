@@ -13,14 +13,12 @@ jobs:
     - name: Get the version
       id: vars
       run: |
-        DATE=$(date +%Y%m%d)
-        VERSION=$DATE-${GITHUB_SHA::7}
-        TAG_PREFIX=docker.pkg.github.com/alekmarinov/aquaponics/aquaponics
+        echo ::set-output name=VERSION::$(date +%Y%m%d)-${GITHUB_SHA::7}
+        echo ::set-output name=TAG_PREFIX::docker.pkg.github.com/alekmarinov/aquaponics/aquaponics
     - name: Build the image
       run: |
         docker build \
-        --tag ${{steps.vars.outputs.TAG_PREFIX}}:${{steps.vars.outputs.VERSION}} \
-        --tag ${{steps.vars.outputs.TAG_PREFIX}}:latest \
+        --tag ${{steps.vars.outputs.TAG_PREFIX}}:${{steps.vars.outputs.VERSION}} ${{steps.vars.outputs.TAG_PREFIX}}:latest \
         .
     - name: Docker Login
       uses: azure/docker-login@v1
